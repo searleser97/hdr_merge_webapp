@@ -1,6 +1,7 @@
 use actix_files::NamedFile;
 use actix_multipart::Multipart;
 use actix_web::{middleware, web, App, Error, HttpResponse, HttpServer, Result};
+use actix_cors::Cors;
 use futures::{StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
 use std::path::{Path, PathBuf};
@@ -26,8 +27,9 @@ async fn upload_images(mut payload: Multipart) -> Result<HttpResponse, Error> {
     // Create vectors to store file paths
     let mut file_paths = Vec::new();
     let output_id = Uuid::new_v4().to_string();
-    let output_file = format!("{}.DNG", output_id);
+    let output_file = format!("{}", output_id);
     let output_path = storage_dir.join(&output_file);
+    println!("Output file path: {:?}", output_path);
     
     // Process uploaded files
     while let Ok(Some(mut field)) = payload.try_next().await {
@@ -79,7 +81,7 @@ async fn upload_images(mut payload: Multipart) -> Result<HttpResponse, Error> {
 
 async fn download_image(path: web::Path<String>) -> Result<NamedFile> {
     let file_id = path.into_inner();
-    let path = PathBuf::from("./storage").join(format!("{}.DNG", file_id));
+    let path = PathBuf::from("./storage").join(format!("{}.dng", file_id));
     
     Ok(NamedFile::open(path)?)
 }
@@ -87,12 +89,18 @@ async fn download_image(path: web::Path<String>) -> Result<NamedFile> {
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
+        let cors = Cors::default()
+            .allow_any_origin()  // In production, you might want to restrict this
+            .allow_any_method()
+            .allow_any_header()
+            .max_age(3600);
         App::new()
             .wrap(middleware::Logger::default())
+            .wrap(cors)
             .service(web::resource("/upload").route(web::post().to(upload_images)))
             .service(web::resource("/download/{file_id}").route(web::get().to(download_image)))
     })
-    .bind("127.0.0.1:8080")?
+    .bind("100.90.241.174:8080")?
     .run()
     .await
 }

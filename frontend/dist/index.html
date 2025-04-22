@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ORF Image HDR Merger</title>
+    <link rel="stylesheet" href="/style-721d116ecb2c5e80.css" integrity="sha384-/qgSRzJPsbREuAI/vVB2rKHa6erUv0iNffnX7Bbk2S2Frc2jIYhqjUJLvt6r8QHo"/>
+  <link rel="modulepreload" href="/hdr_merge_webapp_frontend-869a648fdb9487f2.js" crossorigin="anonymous" integrity="sha384-mDfGziId6/ueUZmvEwCcttA0itxxqFskVcjH3IumOiZgNTe13x/qbMIWRwE7jgTd"><link rel="preload" href="/hdr_merge_webapp_frontend-869a648fdb9487f2_bg.wasm" crossorigin="anonymous" integrity="sha384-Skx+zVfSq6kc2u5bslEzR4/giNVtcnzqF89rYlNGLjWZhZkeVGuJS4PwsE7SN6cH" as="fetch" type="application/wasm"></head>
+  <body>
+<script type="module">
+import init, * as bindings from '/hdr_merge_webapp_frontend-869a648fdb9487f2.js';
+const wasm = await init({ module_or_path: '/hdr_merge_webapp_frontend-869a648fdb9487f2_bg.wasm' });
+
+
+window.wasmBindings = bindings;
+
+
+dispatchEvent(new CustomEvent("TrunkApplicationStarted", {detail: {wasm}}));
+
+</script></body>
+</html>

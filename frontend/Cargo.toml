@@ -4,3 +4,16 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+leptos = { version = "0.5", features = ["csr"] }
+reqwest = { version = "0.11", features = ["json", "multipart"] }
+wasm-bindgen = "0.2"
+wasm-bindgen-futures = "0.4"
+web-sys = { version = "0.3", features = ["File", "FileList", "HtmlInputElement", "FormData"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+gloo = "0.10"
+gloo-file = { version = "0.3.0", features = ["futures"] }
+
+[[bin]]
+name = "hdr_merge_webapp_frontend"
+path = "src/main.rs"
